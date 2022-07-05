@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
 
 namespace Otus.Counting.Radix.Bucket.Sortings.Logic
 {
     public class BucketSort
     {
         private int[] _array;
+
 
         public BucketSort(int[] array)
         {
@@ -16,40 +16,17 @@ namespace Otus.Counting.Radix.Bucket.Sortings.Logic
 
         public int[] Run()
         {
-            var max = _array.Max();
-            
-            var buckets = FormBuckets(max);
+            var buckets = FormBuckets();
 
-            ExtractElementsFromBuckets(buckets);
-
-            return _array;
+            return ExtractElementsFromBuckets(buckets);
         }
 
         #region Support methods
 
-        private void ExtractElementsFromBuckets(List<int>[] buckets)
+        private List<int>[] FormBuckets()
         {
-            var initialArrayIndex = 0;
+            var max = _array.Max();
 
-            for (var i = 0; i < buckets.Length; i++)
-            {
-                var elementInBucket = buckets[i];
-                if (elementInBucket == null || elementInBucket.Count == 0)
-                    continue;
-
-                if (elementInBucket.Count == 1)
-                {
-                    _array[initialArrayIndex++] = elementInBucket.First();
-                }
-                else
-                {
-                    elementInBucket.ForEach(x => { _array[initialArrayIndex++] = x; });
-                }
-            }
-        }
-
-        private List<int>[] FormBuckets(int max)
-        {
             var buckets = new List<int>[_array.Length];
 
             for (var i = 0; i < _array.Length; i++)
@@ -85,6 +62,29 @@ namespace Otus.Counting.Radix.Bucket.Sortings.Logic
             }
 
             elementInBucket.Insert(indexToInsert, currentElement);
+        }
+
+        private int[] ExtractElementsFromBuckets(List<int>[] buckets)
+        {
+            var initialArrayIndex = 0;
+
+            for (var i = 0; i < buckets.Length; i++)
+            {
+                var elementInBucket = buckets[i];
+                if (elementInBucket == null || elementInBucket.Count == 0)
+                    continue;
+
+                if (elementInBucket.Count == 1)
+                {
+                    _array[initialArrayIndex++] = elementInBucket.First();
+                }
+                else
+                {
+                    elementInBucket.ForEach(x => { _array[initialArrayIndex++] = x; });
+                }
+            }
+
+            return _array;
         }
 
         #endregion
