@@ -23,13 +23,42 @@ namespace Tests
         }
 
         [Test]
-        public void Can_Sort_simple_Types_Via_Counting_Sort()
+        public void Can_Sort_Simple_Types_Via_Counting_Sort()
         {
             var sorter = new CountingSortWithSimpleType(GetInitialArray());
 
             var sortedArray = sorter.Run();
 
             CollectionAssert.AreEqual(_sortedArray, sortedArray);
+        }
+
+        [Test]
+        public void Can_Sort_Custom_Types_Via_Counting_Sort()
+        {
+            var users = new User[]
+            {
+                new User(0, "a"),
+                new User(1, "b"),
+                new User(0, "c"),
+                new User(2, "d"),
+                new User(0, "e"),
+                new User(3, "f"),
+            };
+
+
+            var sortedArray = new CountingSortWithCustomType(users).Run();
+
+
+            var expectedSortedUsers = new User[]
+            {
+                new User(0, "a"),
+                new User(0, "c"),
+                new User(0, "e"),
+                new User(1, "b"),
+                new User(2, "d"),
+                new User(3, "f")
+            };
+            CollectionAssert.AreEqual(expectedSortedUsers, sortedArray);
         }
 
 
