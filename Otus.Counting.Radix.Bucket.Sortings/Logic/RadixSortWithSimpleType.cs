@@ -18,9 +18,9 @@ namespace Otus.Counting.Radix.Bucket.Sortings.Logic
         {
             var max = _array.Max();
             var numberOfDozens = max.ToString().Length;
-            var startDenominator = (int) Math.Pow(10, numberOfDozens);
+            var maxDenominator = (int) Math.Pow(10, numberOfDozens);
 
-            for (var denominator = 10; denominator <= startDenominator; denominator *= 10)
+            for (var denominator = 10; denominator <= maxDenominator; denominator *= 10)
             {
                 _array = new CountingSortWithSimpleType(_array, denominator).Run();
             }

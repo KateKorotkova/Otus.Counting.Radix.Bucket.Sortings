@@ -6,10 +6,10 @@ namespace Otus.Counting.Radix.Bucket.Sortings.Logic
     public class CountingSortWithSimpleType
     {
         private int[] _array;
-        private int _denominator;
+        private int? _denominator;
 
 
-        public CountingSortWithSimpleType(int[] array, int denominator = 1)
+        public CountingSortWithSimpleType(int[] array, int? denominator = null)
         {
             _array = array;
             _denominator = denominator;
@@ -32,7 +32,7 @@ namespace Otus.Counting.Radix.Bucket.Sortings.Logic
 
             for (var i = 0; i < _array.Length; i++)
             {
-                var currentElement = (_array[i] % _denominator) / (_denominator / 10);
+                var currentElement = ExtractDigitFrom(i);
 
                 if (uniqueValuesArray.ContainsKey(currentElement))
                 {
@@ -63,13 +63,21 @@ namespace Otus.Counting.Radix.Bucket.Sortings.Logic
 
             for (var i = _array.Length - 1; i >= 0; i--)
             {
-                var currentElement = (_array[i] % _denominator) / (_denominator / 10);
+                var currentElement = ExtractDigitFrom(i);
                 var indexUpperBound = --uniqueValuesArray[currentElement];
                 
                 newArray[indexUpperBound] = _array[i];
             }
 
             return newArray;
+        }
+
+        private int ExtractDigitFrom(int i)
+        {
+            if (!_denominator.HasValue)
+                return _array[i];
+
+            return (_array[i] % _denominator.Value) / (_denominator.Value / 10);
         }
 
         #endregion
