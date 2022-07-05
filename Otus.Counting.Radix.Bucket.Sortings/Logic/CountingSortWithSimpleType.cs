@@ -6,11 +6,13 @@ namespace Otus.Counting.Radix.Bucket.Sortings.Logic
     public class CountingSortWithSimpleType
     {
         private int[] _array;
+        private int _denominator;
 
 
-        public CountingSortWithSimpleType(int[] array)
+        public CountingSortWithSimpleType(int[] array, int denominator = 1)
         {
             _array = array;
+            _denominator = denominator;
         }
 
 
@@ -30,7 +32,7 @@ namespace Otus.Counting.Radix.Bucket.Sortings.Logic
 
             for (var i = 0; i < _array.Length; i++)
             {
-                var currentElement = _array[i];
+                var currentElement = (_array[i] % _denominator) / (_denominator / 10);
 
                 if (uniqueValuesArray.ContainsKey(currentElement))
                 {
@@ -41,6 +43,8 @@ namespace Otus.Counting.Radix.Bucket.Sortings.Logic
                     uniqueValuesArray.Add(currentElement, 1);
                 }
             }
+
+            uniqueValuesArray = uniqueValuesArray.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
 
             for (var i = 1; i < uniqueValuesArray.Count; i++)
             {
@@ -59,10 +63,10 @@ namespace Otus.Counting.Radix.Bucket.Sortings.Logic
 
             for (var i = _array.Length - 1; i >= 0; i--)
             {
-                var currentElement = _array[i];
+                var currentElement = (_array[i] % _denominator) / (_denominator / 10);
                 var indexUpperBound = --uniqueValuesArray[currentElement];
                 
-                newArray[indexUpperBound] = currentElement;
+                newArray[indexUpperBound] = _array[i];
             }
 
             return newArray;

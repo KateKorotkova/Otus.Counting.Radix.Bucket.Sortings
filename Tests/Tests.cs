@@ -61,14 +61,29 @@ namespace Tests
             CollectionAssert.AreEqual(expectedSortedUsers, sortedArray);
         }
 
+        [Test]
+        public void Can_Sort_Simple_Types_Via_Radix_Sort()
+        {
+            var initialArray = new[] { 333, 555, 351, 144, 132, 123 };
+            var sortedArray = new[] { 123, 132, 144, 333, 351, 555 };
+
+            var sorter = new RadixSortWithSimpleType(GetInitialArray(initialArray));
+
+            var result = sorter.Run();
+
+            CollectionAssert.AreEqual(sortedArray, result);
+        }
+
 
         #region Support Methods
 
-        private int[] GetInitialArray()
+        private int[] GetInitialArray(int[] array = null)
         {
-            var tmpArray = new int[_initialArray.Length];
+            var res = array ?? _initialArray;
 
-            _initialArray.CopyTo(tmpArray, 0);
+            var tmpArray = new int[res.Length];
+
+            res.CopyTo(tmpArray, 0);
 
             return tmpArray;
         }
